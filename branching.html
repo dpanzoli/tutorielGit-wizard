@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<meta charset="utf-8"></meta>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"></script>
+<script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+<style>
+  body {
+    padding: 10px;
+  }
+
+  .accordion {
+	margin-top: 20px;
+  }
+  .code {
+	font-family: monospace;
+  }
+  pre {
+	padding: 7px;
+	padding-left: 40px;
+	border: 1px solid #dedede;
+	background-image: url('terminal.png');
+	background-repeat: no-repeat;
+	background-position: top 0px left 0px;
+  }
+</style>
+<script>
+	$(document).ready(function() {
+
+    //TODO à supprimer
+    $('.ui.accordion').accordion();
+
+    $('.help').popup();
+
+		$('.accordion .header').on('click', function(event) {
+			 event.stopPropagation();
+		});
+
+		$('input').each(function() {
+			if ($(this).attr('name').startsWith('step'))
+				var step = parseInt($(this).attr('name').substring(4));
+				$(this).click(function() {
+					$('.ui.accordion').accordion('open', step-1).accordion('close', 'others');
+				});
+		});
+
+		$('input[name=start]').click(function() {
+			$('.ui.accordion').accordion('open', 1).accordion('close', 0);
+		});
+
+		$('input[name=end]').click(function() {
+			$('.ui.accordion').accordion('close', 7).accordion('close others');;
+		});
+
+
+
+	});
+
+</script>
+<body ng-app="app" ng-controller="ctrl">
+
+	<div class="ui text container">
+		<h1 class="ui dividing header">Branching with git</h1>
+		<p>...
+		</p>
+	</div>
+
+	<div class="ui container">
+	<div class="ui styled fluid accordion">
+
+	<div class="active title">
+	<i class="dropdown icon"></i>
+	Getting started
+	</div>
+	<div class="active content">
+	<p>Before we start, please name two users.</p>
+	<form class="ui form">
+	<div class="fields">
+		<div class="five wide field">
+			<label>User A</label>
+			<input name="userA" ng-model="userA" type="text" placeholder="username here" required="">
+		</div>
+		<div class="five wide field">
+			<label>User B</label>
+			<input name="userB" ng-model="userB" type="text" placeholder="username here" required="">
+		</div>
+	</div>
+	</form>
+	<div ng-show="userA==undefined||userB==undefined" class="ui negative message">
+		<p>Two users must be identified in order to proceed with the tutorial...</p>
+	</div>
+	<div ng-show="userA!=undefined&&userB!=undefined" class="ui positive message">
+		<p>{{userA}} and {{userB}} are collaborating on a project.</p>
+	</div>
+	<input ng-show="userA!=undefined&&userB!=undefined"  name="start" class="ui button" value="Start">
+	</div>
+
+	<div class="title">
+	<i class="dropdown icon"></i>
+	Step 1
+	</div>
+	<div class="content">
+	<p>...</p>
+	<input class="ui button" value="Proceed" name="step3">
+	</div>
+
+	</div><!--fin de l'accordéon -->
+
+	<div ng-show="award" class="ui icon positive message">
+		  <i class="fas fa-trophy fa-3x"></i>
+		  <div class="content" style="padding-left:10px">
+			<div class="header">
+			  <h1>Ce tutoriel est terminé !</h1>
+			</div>
+			<p>Vous avez terminé ce tutoriel et vous êtes maintenant capable de collaborer sur un projet en utilisant un outil puissant et incontournable.</p>
+			<p>Cependant, Git est un outil très complexe et le maîtriser vous demandera de nombreuses années d'expérience !</p>
+		  </div>
+
+	</div>
+ </div>
+
+
+
+</body>
+<script>
+  var app = angular.module('app', []);
+  app.controller('ctrl', function($scope) {
+
+    //initialisation
+    $scope.userA = 'David';
+	  $scope.userB = 'Pierre';
+
+	$scope.award= false;
+
+  });
+
+</script>
+</html>
