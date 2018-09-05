@@ -74,50 +74,84 @@
 	Getting started
 	</div>
 	<div class="active content">
-	<p>Before we start, please name two users.</p>
+	<p>Before we start, please name one user.</p>
 	<form class="ui form">
 	<div class="fields">
 		<div class="five wide field">
-			<label>User A</label>
+			<label>User</label>
 			<input name="userA" ng-model="userA" type="text" placeholder="username here" required="">
-		</div>
-		<div class="five wide field">
-			<label>User B</label>
-			<input name="userB" ng-model="userB" type="text" placeholder="username here" required="">
 		</div>
 	</div>
 	</form>
-	<div ng-show="userA==undefined||userB==undefined" class="ui negative message">
-		<p>Two users must be identified in order to proceed with the tutorial...</p>
+	<div ng-show="userA==undefined" class="ui negative message">
+		<p>One user must be identified in order to proceed with the tutorial...</p>
 	</div>
 	<div ng-show="userA!=undefined&&userB!=undefined" class="ui positive message">
-		<p>{{userA}} and {{userB}} are collaborating on a project.</p>
+		<p>{{userA}} is working on a project.</p>
 	</div>
 	<input ng-show="userA!=undefined&&userB!=undefined"  name="start" class="ui button" value="Start">
 	</div>
 
 	<div class="title">
 	<i class="dropdown icon"></i>
-	Step 1
+	Set-up
 	</div>
 	<div class="content">
-	<p>...</p>
-	<input class="ui button" value="Proceed" name="step3">
+	<p>From an existing working project, push forward new features while fixing bugs on project.</p>
+	<input class="ui button" value="Proceed" name="step1">
 	</div>
 
+	<div class="title">
+	<i class="dropdown icon"></i>
+	Opening a new branch
+	</div>
+	<div class="content">
+		<p>From an existing working project, push forward new features while fixing bugs on project.</p>
+		<input class="ui button" value="Proceed" name="step2">
+	</div>
+	
+	<div class="title">
+	<i class="dropdown icon"></i>
+	Switching branches
+	</div>
+	<div class="content">
+		<p>Siwtch back to previous commit in order to fix bugs on the released version</p>
+		<p>...</p>
+		<input class="ui button" value="Proceed" name="step3">
+	</div>
+	
+	<div class="title">
+	<i class="dropdown icon"></i>
+	Merging two branches
+	</div>
+	<div class="content">
+		<pre>git log --oneline --decorate --graph</pre>
+		<ul>
+		<li>"oneline" is for showing one line only of each commit</li>
+		<li>"decorate" shows the positions of each branch and of HEAD</li>
+		<li>"graph" displays the history in a graph-like fashion</li>
+		</ul>
+		<p>Merge the branch x with master in order to release v2.</p>
+		<input class="ui button" value="Claim my badge" name="end" ng-click='award=true'>
+	</div>
+	
 	</div><!--fin de l'accordéon -->
-
+	
 	<div ng-show="award" class="ui icon positive message">
-		  <i class="fas fa-trophy fa-3x"></i>
+		  <!--i class="fas fa-trophy fa-3x"></i-->
+		  <img width="128px" src="badges/crocodile.png">
 		  <div class="content" style="padding-left:10px">
 			<div class="header">
-			  <h1>Ce tutoriel est terminé !</h1>
+			  <h1>you have completed this tutorial!</h1>
 			</div>
-			<p>Vous avez terminé ce tutoriel et vous êtes maintenant capable de collaborer sur un projet en utilisant un outil puissant et incontournable.</p>
-			<p>Cependant, Git est un outil très complexe et le maîtriser vous demandera de nombreuses années d'expérience !</p>
+			<p>You have successfully completed this tutorial and you've upgraded to the rank of <b>crocodile</b>.</p>
+			<p>Congratulations!</p>
+			<p>The git crocodile ...</p>
 		  </div>
 
 	</div>
+	<p ng-show="award"><a href='index.html'>Back to summary</a></p>
+	
  </div>
 
 
