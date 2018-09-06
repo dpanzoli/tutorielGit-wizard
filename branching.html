@@ -103,7 +103,7 @@
 	</div>
 	<div class="active content">
 		<p>In this scenario, you have created and released an application named <b>Youstache!</b>, a user-acclaimed application where faces of celebrities can be ornamented with a magnificient moustache.</p>
-		<p>Create a new Java project on Eclipse and imports the sources that can be downloaded here:&nbsp;<a href="tuto_git.zip">tuto_git_advanced.zip&nbsp;<i class="fas fa-file-archive"></i></a></p>
+		<p>Create a new Java project on Eclipse and imports the sources that can be downloaded here:&nbsp;<a href="gitAdvanced.zip">gitAdvanced.zip&nbsp;<i class="fas fa-file-archive"></i></a></p>
 		<p>Run the project and check that everything is working.</p>
 		<p>Init a local git repository, commit the first version of Youstache!</p>
 		<pre>git init
@@ -213,6 +213,8 @@ git commit -m "Released version now integrates new features and content"</pre>
 		</ul>
 		<p>You should figure the graph now looks something like the image below.</p>
 		<p><img src="project_graph_final.png" height="200px"></p>
+		<p>Finally, the development branch is no more used and can, therefore be deleted.</p>
+		<pre>git branch -d newVersion</pre>
 		<input class="ui button" value="Claim my badge" name="end" ng-click='award=true'>
 	</div>
 	
