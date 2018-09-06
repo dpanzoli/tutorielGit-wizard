@@ -28,10 +28,9 @@
 <script>
 	$(document).ready(function() {
 
-    //TODO à supprimer
-    $('.ui.accordion').accordion();
+		$('.ui.accordion').accordion();
 
-    $('.help').popup();
+		//$('.help').popup();
 
 		$('.accordion .header').on('click', function(event) {
 			 event.stopPropagation();
@@ -41,7 +40,7 @@
 			if ($(this).attr('name').startsWith('step'))
 				var step = parseInt($(this).attr('name').substring(4));
 				$(this).click(function() {
-					$('.ui.accordion').accordion('open', step-1).accordion('close', 'others');
+					$('.ui.accordion').accordion('open', step+1).accordion('close', 'others');
 				});
 		});
 
@@ -50,7 +49,7 @@
 		});
 
 		$('input[name=end]').click(function() {
-			$('.ui.accordion').accordion('close', 7).accordion('close others');;
+			$('.ui.accordion').accordion('close', 4).accordion('close others');;
 		});
 
 
@@ -62,14 +61,20 @@
 
 	<div class="ui text container">
 		<h1 class="ui dividing header">Branching with git</h1>
-		<p>...
-		</p>
+		<p>In this tutorial, branching with git is used as a way of maintaining an already released application.</p>
+		<p>On the one hand, the application is required to evolve (more content, more features). On the other hand, bugs on the existing version are reported by users during the development of the new version.</p>
+		<p>These bugs must be fixed without hindering the work in progress. Branching is the way to make this possible, as demonstrates this one-user tutorial. Get onboard now!</p>
+		<h4>Prerequisite</h4>
+		<ul>
+		<li>Having completed git basics tutorial</li>
+		<li>Having a GitHub account</li>
+		</ul>
 	</div>
 
 	<div class="ui container">
 	<div class="ui styled fluid accordion">
 
-	<div class="active title">
+	<!--div class="active title">
 	<i class="dropdown icon"></i>
 	Getting started
 	</div>
@@ -90,15 +95,22 @@
 		<p>{{userA}} is working on a project.</p>
 	</div>
 	<input ng-show="userA!=undefined&&userB!=undefined"  name="start" class="ui button" value="Start">
-	</div>
+	</div-->
 
-	<div class="title">
+	<div class="active title">
 	<i class="dropdown icon"></i>
 	Set-up
 	</div>
-	<div class="content">
-	<p>From an existing working project, push forward new features while fixing bugs on project.</p>
-	<input class="ui button" value="Proceed" name="step1">
+	<div class="active content">
+		<p>In this scenario, you have created and released an application named <b>Youstache!</b>, a user-acclaimed application where faces of celebrities can be ornamented with a magnificient moustache.</p>
+		<p>Create a new Java project on Eclipse and imports the sources that can be downloaded here:&nbsp;<a href="tuto_git.zip">tuto_git_advanced.zip&nbsp;<i class="fas fa-file-archive"></i></a></p>
+		<p>Run the project and check that everything is working.</p>
+		<p>Init a local git repository, commit the first version of Youstache!</p>
+		<pre>git init
+git add -A
+git commit -m "First release of Youstache!"</pre>
+		
+		<input class="ui button" value="Proceed" name="start">
 	</div>
 
 	<div class="title">
@@ -106,8 +118,20 @@
 	Opening a new branch
 	</div>
 	<div class="content">
-		<p>From an existing working project, push forward new features while fixing bugs on project.</p>
-		<input class="ui button" value="Proceed" name="step2">
+		<p>The app has been released days ago, and it's already a success. You decide to improve the application with more content.</p>
+		<p>In order to do so, you open a new branch for future development of the app.</p>
+		<pre>git branch newVersion</pre>
+		<pre>git checkout newVersion</pre>
+		<p>In your java project, upload 4 new images in the image folder. Each image must be cropped to 450px wide and 600px high. If you are out of imagination, use the following pictures:
+		<a href="donaldtrump.jpg">donaldtrump.jpg&nbsp;<i class="far fa-file-image"></i></a>&nbsp;
+		<a href="grumpycat.jpg">grumpycat.jpg&nbsp;<i class="far fa-file-image"></i></a>&nbsp;
+		<a href="elvispresley.jpg">elvispresley.jpg&nbsp;<i class="far fa-file-image"></i></a>&nbsp;
+		<a href="harrypotter.jpg">harrypotter.jpg&nbsp;<i class="far fa-file-image"></i></a>
+		</p>
+		<p>Commit those changes.</p>
+		<pre>git add -A
+git commit -m "new content for next release"</pre>
+		<input class="ui button" value="Proceed" name="step1">
 	</div>
 	
 	<div class="title">
@@ -115,8 +139,53 @@
 	Switching branches
 	</div>
 	<div class="content">
-		<p>Siwtch back to previous commit in order to fix bugs on the released version</p>
-		<p>...</p>
+		<p>Users are starting to complain because the application is buggy.</p>
+		<img src="review.png" width="600px">
+		<p>Youstache has become so popular on the market that you feel rushed by the user community to fix this bug before the sales start to drop off.</p>
+		<p>Switch back to the master branch to retrieve the released version of the app. The master branch will be used to fix the bug.</p>
+		<pre>git checkout master</pre>
+		<p>Notice that the new images have disappeared, which tells the project in the workspace has been replaced by the older version (head of branch master).</p>
+		<p>Mend the Java code so that a click on the image is no more processed if the moustache has already been put. Changes should be made in the class <i>Model.java</i><p>
+		<p>Add and commit your changes</p>
+		<pre>git add -A
+git commit -m "Fixed a bug where a misclick caused the moustache to move"</pre>
+		<div class="ui icon message">
+		  <i class="fas fa-chess-pawn fa-5x"></i>
+		  <div class="content">
+			<div class="header">
+			  Current release fixed!
+			</div>
+			<p>This new version could be released in replacement of the buggy version.</p>
+		  </div>
+		</div>
+		<input class="ui button" value="Proceed" name="step2">
+	</div>
+	
+	<div class="title">
+	<i class="dropdown icon"></i>
+	Managing branches
+	</div>
+	<div class="content">
+		<p>The urgent matter has been taken care of. It is now time to resume the development of the new release.</p>
+		<pre>git checkout newVersion</pre>
+		<p>The interaction model should be improved to allow users to move the moustache when they mean to. In the Java project, implement the following features:
+		<ul>
+			<li>When a moustache is pinned, a click within 20px of its center will allow to readjust it to the new coordinates. Beyond that pixel distance, there's no effect on the moustache.</li>
+			<li>Pressing "Suppr" causes the moustache to be removed.</li>
+		</ul>
+		</p>
+		<p>Commit your changes.</p>
+		<pre>git add -A
+git commit -m "Interaction model has been improved"</pre>
+		<div class="ui icon message">
+		  <i class="fas fa-chess-knight fa-5x"></i>
+		  <div class="content">
+			<div class="header">
+			  new release ready!
+			</div>
+			<p>The developments in this new branch are now complete. It is now time to merge the development branch with the master, and release the new version of Youstache!</p>
+		  </div>
+		</div>
 		<input class="ui button" value="Proceed" name="step3">
 	</div>
 	
@@ -125,13 +194,25 @@
 	Merging two branches
 	</div>
 	<div class="content">
+		<p>At this stage, the history of your project could be represented by the graph below.</p>
+		<p><img src="project_graph.png" height="200px"></p>
+		<p>The modifications of newVersion are ready to be merged into the released Youstache! application.</p>
+		<pre>git checkout master
+git merge newVersion</pre>
+		<p>Unsurprinsingly, conflicts will appear and need to be solved for the merging to be completed. Git can tell you which files should be inspected.</p>
+		<pre>git diff -names-only</pre>
+		<p>Go to the Eclipse editor and clean the code where needed. Look for those >>>>> markers <<<<<.</p>
+		<pre>git add -A
+git commit -m "Released version now integrates new features and content"</pre>
+		<p>Once the development branch has been merged, the head now points to the latest commit. The whole history of the commits can be read in the log.</p>
 		<pre>git log --oneline --decorate --graph</pre>
 		<ul>
-		<li>"oneline" is for showing one line only of each commit</li>
-		<li>"decorate" shows the positions of each branch and of HEAD</li>
-		<li>"graph" displays the history in a graph-like fashion</li>
+		<li><i>oneline</i> is for showing one line only of each commit</li>
+		<li><i>decorate</i> shows the positions of each branch and of HEAD</li>
+		<li><i>graph</i> displays the history in a graph-like fashion</li>
 		</ul>
-		<p>Merge the branch x with master in order to release v2.</p>
+		<p>You should figure the graph now looks something like the image below.</p>
+		<p><img src="project_graph_final.png" height="200px"></p>
 		<input class="ui button" value="Claim my badge" name="end" ng-click='award=true'>
 	</div>
 	
@@ -146,7 +227,7 @@
 			</div>
 			<p>You have successfully completed this tutorial and you've upgraded to the rank of <b>crocodile</b>.</p>
 			<p>Congratulations!</p>
-			<p>The git crocodile ...</p>
+			<p>The git crocodile is knowledgeable in managing large projects requiring a continuous integration of features and a flawless collaboration with swampmates!</p>
 		  </div>
 
 	</div>
