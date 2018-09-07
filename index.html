@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<meta charset="utf-8"></meta>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"></script>
+<style>
+  body {
+    padding: 10px;
+  }
+  
+  .ui.small.image {
+	width:96px;
+  }
+</style>
+<script>
+	$(document).ready(function() {
+
+		var deflang;
+		//1st, look for a saved value in local storage
+		if (localStorage.getItem('lang')) {
+			deflang = localStorage.getItem('lang');
+		} else if (!deflang) { //Otherwise set default if not set already
+			deflang = 'fr';
+		}
+		selectLanguage(deflang);
+		
+		$('.ui.dropdown').dropdown({
+			onChange: function(val) {
+				var lang = $(val).attr('class').substring(0,2);
+				selectLanguage(lang);
+				//save, in case of reloading the page
+				localStorage.setItem('lang',lang);
+			}
+		});
+		
+		function selectLanguage(lang) {
+			//show and hide
+			$("p,span").filter(":not([lang='"+lang+"'])").hide();
+			$("p,span").filter("[lang='"+lang+"']").show();
+			//change dropdown
+			var langLib = $('.ui.dropdown .menu .item .'+lang).parent('.item').clone();
+			$('.ui.dropdown .text').empty().prepend(langLib);
+		}
+	});
+
+</script>
+<body>
+
+<div style="float:right">
+	<div class="ui inline dropdown">
+		<div class="text">
+			<div class="item">
+				<i class="gb flag"></i>English
+			</div>
+		</div>
+		<i class="dropdown icon"></i>
+		<div class="menu">
+			<div class="item">
+				<i class="fr flag"></i>Français
+			</div>
+			<div class="item">
+				<i class="gb flag"></i>English
+			</div>
+		</div>
+	</div>
+	</div>
+
+<h1>
+	<span lang="fr">Apprendre git</span>
+	<span lang="gb">Learning git</span>
+</h1>
+
+<p>A set of tutorials to discover git from the basic to more advanced features.</p>
+<p>Author: David Panzoli</p>
+
+<div class="ui items">
+  <div class="item">
+    <div class="ui small image">
+      <img src="badges/badger.png">
+    </div>
+    <div class="content">
+      <div class="header">
+		<span lang="fr">Les bases de git</span>
+		<span lang="gb">Git basics</span>
+	  </div>
+      <div class="meta">
+        <span lang="gb" class="stay">2 hours</span>
+		<span lang="fr" class="stay">2 heures</span>
+      </div>
+      <div class="description">
+        <p lang="gb">Through this tutorial, two users learn the basics of versionning a project using git.</p>
+		<p lang="fr">Dans ce tutoriel, deux utilisateurs apprennent les rudiments de git et de la gestion de version.</p>
+		<p lang="fr"><a href="basics.html">Commencer</a></p>
+		<p lang="gb"><a href="basics.html">Start tutorial</a></p>
+      </div>
+    </div>
+  </div>
+  <div class="item">
+    <div class="ui small image">
+      <img src="badges/crocodile.png">
+    </div>
+    <div class="content">
+      <div class="header">
+		<span lang="fr">Les branches avec git</span>
+		<span lang="gb">Branching with git</span>
+	</div>
+      <div class="meta">
+        <span lang="fr" class="stay">1 heure</span>
+		<span lang="gb" class="stay">1 hour</span>
+      </div>
+      <div class="description">
+        <p lang="gb">In this tutorial, branching with git is used as a way of maintaining an already released application while preparing the next release.</p>
+		<p lang="gb"><a href="branching.html">Start tutorial</a></p>
+        <p lang="fr">Dans ce tutoriel pour 1 utilisateur, les branches git sont utilisées comme moyen pour maintenir une application existante tout en préparant la prochaine version.</p>
+		<p lang="fr">Bientôt disponible ...</p>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</body>
+</html>
