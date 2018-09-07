@@ -36,7 +36,7 @@
 			 event.stopPropagation();
 		});
 
-		$('input').each(function() {
+		$('button').each(function() {
 			if ($(this).attr('name').startsWith('step'))
 				var step = parseInt($(this).attr('name').substring(4));
 				$(this).click(function() {
@@ -44,11 +44,11 @@
 				});
 		});
 
-		$('input[name=start]').click(function() {
+		$('button[name=start]').click(function() {
 			$('.ui.accordion').accordion('open', 1).accordion('close', 0);
 		});
 
-		$('input[name=end]').click(function() {
+		$('button[name=end]').click(function() {
 			$('.ui.accordion').accordion('close', 7).accordion('close others');;
 		});
 
@@ -72,8 +72,16 @@
 		
 		function selectLanguage(lang) {
 			//show and hide
-			$("span").filter(":not([lang='"+lang+"'])").hide();
-			$("span").filter("[lang='"+lang+"']").show();
+			$("span").each(function() {
+				if ($(this).is('[lang]')) {
+					if ($(this).attr('lang') != lang) {
+						$(this).hide();
+					} else {
+						$(this).show();
+					}
+				}
+				
+			});
 			//change dropdown
 			var langLib = $('.ui.dropdown .menu .item .'+lang).parent('.item').clone();
 			$('.ui.dropdown .text').empty().prepend(langLib);
@@ -129,89 +137,169 @@
 				<span lang="gb">Before we start, please name two users.</span>
 			</p>
 			
-	<form class="ui form">
-	<div class="fields">
-		<div class="five wide field">
-			<label>
-				<span lang="fr">Utilisateur A</span>
-				<span lang="gb">User A</span>
-			</label>
-			<input name="userA" ng-model="userA" type="text" placeholder="nom/username" required="">
-		</div>
-		<div class="five wide field">
-			<label>
-				<span lang="fr">Utilisateur B</span>
-				<span lang="gb">User B</span>
-			</label>
-			<input name="userB" ng-model="userB" type="text" placeholder="nom/username" required="">
-		</div>
-	</div>
-	</form>
-	<div ng-show="userA==undefined||userB==undefined" class="ui negative message">
-		<span lang="fr">Deux utilisateurs sont nécessaires pour suivre ce tutoriel...</span>
-		<span lang="gb">Two users must be identified in order to proceed with the tutorial...</span>
-	</div>
-	<div ng-show="userA!=undefined&&userB!=undefined" class="ui positive message">
-		<span lang="fr">{{userA}} et {{userB}} travaillent sur un même projet.</span>
-		<span lang="gb">{{userA}} and {{userB}} are collaborating on a project.</span>
-	</div>
-	<input ng-show="userA!=undefined&&userB!=undefined"  name="start" class="ui button" value="Commencer/start">
-	</div>
-
-	<div class="title">
-	<i class="dropdown icon"></i>
-	Configuration initiale
-	</div>
-	<div class="content">
-	<p>La première étape consiste à créer un compte sur GitHub <i class="github icon"></i> pour {{userA}} et {{userB}} en se rendant à l'adresse <a href="https://github.com/" target="blank">https://github.com<i class="external link alternate icon"></i></a></p>
-	<p>Ensuite, {{userA}} crée un nouveau projet Eclipse et y importe les sources du projet à télécharger en cliquant ici : <a href="tuto_git.zip">tuto_git.zip&nbsp;<i class="fas fa-file-archive"></i></a></p>
-
-	<p>{{userA}} vérifie que le projet compile et se lance normalement.</p>
-	<input class="ui button" value="Continuer" name="step3">
-	</div>
+			<form class="ui form">
+			<div class="fields">
+				<div class="five wide field">
+					<label>
+						<span lang="fr">Utilisateur A</span>
+						<span lang="gb">User A</span>
+					</label>
+					<input name="userA" ng-model="userA" type="text" placeholder="nom/username" required="">
+				</div>
+				<div class="five wide field">
+					<label>
+						<span lang="fr">Utilisateur B</span>
+						<span lang="gb">User B</span>
+					</label>
+					<input name="userB" ng-model="userB" type="text" placeholder="nom/username" required="">
+				</div>
+			</div>
+			</form>
+			<div ng-show="userA==undefined||userB==undefined" class="ui negative message">
+				<span lang="fr">Deux utilisateurs sont nécessaires pour suivre ce tutoriel...</span>
+				<span lang="gb">Two users must be identified in order to proceed with the tutorial...</span>
+			</div>
+			<div ng-show="userA!=undefined&&userB!=undefined" class="ui positive message">
+				<span lang="fr">{{userA}} et {{userB}} travaillent sur un même projet.</span>
+				<span lang="gb">{{userA}} and {{userB}} are collaborating on a project.</span>
+			</div>
+			<button ng-show="userA!=undefined&&userB!=undefined" name="start" class="ui button">
+				<span lang="fr">Commencer</span>
+				<span lang="gb">Start</span>
+			</button>
+			</div>
+	
+			<div class="title">
+				<i class="dropdown icon"></i>
+				<span lang="fr">Configuration initiale</span>
+				<span lang="gb">Set-up</span>
+			</div>
+			<div class="content">
+			<p>
+				<span lang="fr">La première étape consiste à créer un compte sur GitHub <i class="github icon"></i> pour {{userA}} et {{userB}} en se rendant à l'adresse <a href="https://github.com/" target="blank">https://github.com<i class="external link alternate icon"></i></a></span>
+				<span lang="gb">The first step consists in {{userA}} and {{userB}} signing up to an account on GitHub <i class="github icon"></i>at the following address <a href="https://github.com/" target="blank">https://github.com<i class="external link alternate icon"></i></a></span>
+			</p>
+			<p>
+				<span lang="fr">Ensuite, {{userA}} crée un nouveau projet Eclipse et y importe les sources du projet à télécharger en cliquant ici : <a href="tuto_git.zip">tuto_git.zip&nbsp;<i class="fas fa-file-archive"></i></a></span>
+				<span lang="gb">Then, {{userA}} creates a new Java project on Eclipse and imports the sources that can be downloaded here:<a href="tuto_git.zip">tuto_git.zip&nbsp;<i class="fas fa-file-archive"></i></a></span>
+			</p>
+			<p>
+				<span lang="fr">{{userA}} vérifie que le projet compile et se lance normalement.</span>
+				<span lang="gb">{{userA}} checks that the project compiles and runs successfully.</span>
+			</p>
+			<button class="ui button" name="step3">
+				<span lang="fr">Passer à l'étape suivante</span>
+				<span lang="gb">Proceed to next step</span>
+			</button>
+			</div>
 
 	<div class=" title">
 	<i class="dropdown icon"></i>
-		Création du dépôt et synchronisation sur GitHub
+		<span lang="fr">Création du dépôt et synchronisation sur GitHub</span>
+		<span lang="gb">Creating a repository and push on GitHub</span>
 	</div>
 	<div class=" content">
-		<p>En utilisant un terminal, {{userA}} se rend dans le répertoire du projet et initialise un dépôt local Git.</p>
+		<p>
+			<span lang="fr">En utilisant un terminal, {{userA}} se rend dans le répertoire du projet et initialise un dépôt local Git.</span>
+			<span lang="gb">Using a terminal, {{userA}} navigates to the project directory and initialises a new git local repository.</span>
+		</p>
 		<pre>git init</pre>
-		<p>Un message <i class="fas fa-paperclip help" data-content="Affichage du message ici..."></i> dans la console confirme l'initialialisation du répertoire courant comme dépôt Git.</p>
-		<p>Il faut désormais indiquer à Git quel(s) fichier(s) ou répertoire doivent être exclus du versionnement. Pour cela, {{userA}} ajoute un fichier <span class="code">.gitignore</span>.</p>
+		<p>
+			<span lang="fr">Un message dans la console confirme l'initialialisation du répertoire courant comme dépôt Git.</span>
+			<span lang="gb">A message in the terminal confirms that an empty git repository has been initialised in the current directory.</p>
+			</span>
+		</p>
+		<p>
+			<span lang="fr">Il faut désormais indiquer à Git quel(s) fichier(s) ou répertoire doivent être exclus du versionnement. Pour cela, {{userA}} ajoute un fichier <span class="code">.gitignore</span>.</span>
+			<span lang="gb">The next step consists in telling git which file(s) should be excluded from versionning. To that end, {{userA}} creates a new text file <span class="code">.gitignore</span>.</span>
+		</p>
 		<pre>touch .gitignore</pre>
-    <p>{{userA}} édite le fichier avec un éditeur de texte et ajoute les patterns à ignorer, en l'occurrence les fichiers compilés et les paramètres personnels d'Eclipse.</p>
+		<p>
+			<span lang="fr">{{userA}} édite le fichier avec un éditeur de texte et ajoute les patterns à ignorer, en l'occurrence les fichiers compilés et les paramètres personnels d'Eclipse.</span>
+			<span lang="gb">{{userA}} edits the file with a text editor and adds the following patterns (compiled bytecode and personnal Eclipse parameters).</span>
+		</p>
 		<pre>/bin/
 /.settings/</pre>
-		<p>{{UserA}} enregistre le fichier et quitte.</p>
-		<p>{{userA}} ajoute ensuite les fichiers à versionner dans l'index du dépôt.<p>
+		<p>
+			<span lang="fr">{{UserA}} enregistre le fichier et quitte.</span>
+			<span lang="gb">{{userA}} saves and quits.</span>
+		</p>
+		<p>
+			<span lang="fr">{{userA}} ajoute ensuite les fichiers à versionner dans l'index du dépôt.</span>
+			<span lang="gb">{{userA}} adds all the files/directories to be tracked to the repository index.</span>
+		</p>
 		<pre>git add -A</pre>
-		<p>{{userA}} vérifie que tous les fichiers du projet sauf les fichiers ignorés ont été mise dans l'index.</p>
+		<p>
+			<span lang="fr">{{userA}} vérifie que tous les fichiers du projet sauf les fichiers ignorés ont été mise dans l'index.</span>
+			<span lang="gb">{{userA}} checks that all the project files were successfully added to the index, except those ignored. In the git terminolgy, these files are now staged.</span>
+		</p>
 		<pre>git status</pre>
-		<p>{{userA}} valide ces ajouts dans une première révision.<p>
+		<p>
+			<span lang="fr">{{userA}} valide ces ajouts dans une première révision.</span>
+			<span lang="gb">{{userA}} commits these changes within a first revision.</span>
+		</p>
 		<pre>git commit -m "première version du projet"</pre>
-		<p>{{UserA}} vérifie le changement de status des fichiers validés</p>
+		<p>
+			<span lang="fr">Cette révision est désormais enregistrée dans le dépôt local. Pour la synchroniser avec un dépôt distant, il faut d'abord en créer un nouveau sur GitHub.</span>
+			<span lang="gb">The revision is acknowledged by git, and receives a hash (the equivalent of a revision number). This revision is now the head of the local repository.</span>
+		</p>
+		<p>
+			<span lang="fr">{{UserA}} vérifie le changement de status des fichiers validés</span>
+			<span lang="gb">{{userA}} checks again the status of the local repository.</span>
+		</p>
 		<pre>git status</pre>
-		<p>Cette révision est désormais enregistrée dans le dépôt local. Pour la synchroniser avec un dépôt distant, il faut d'abord en créer un nouveau sur GitHub.</p>
-		<p>Sur GitHub, {{userA}} crée un nouveau projet, par exemple avec le nom <span class="code">tutorielGit</span> et récupère son adresse</p>
+		<p>
+			<span lang="fr">Comme la validation vient d'être réalisée, il n'y a pas de différences entre la copie locale et la révision de tête. Dans la terminologie git, la copie de travail est propre.<br/>Puisqu'il contient désormais une révision, le dépôt local peut être synchronisé avec un dépôt distant.</span>
+			<span lang="gb">For now, there are no differences between the working copy and the head revision. In the git terminology, the working copy is clean.<br/>Since it has now a head revision, the local repository may be synced to a remote repository.</span>			
+		</p>
+		<p>
+			<span lang="fr">La prochaine étape consiste à créer un dépôt en ligne sur GitHub.</span>
+			<span lang="fr">The first step is to create a new repository online on GitHub.</span>
+		</p>
+		<p>
+			<span lang="fr">Sur GitHub, {{userA}} crée un nouveau projet, par exemple avec le nom <span class="code">tutorielGit</span> et récupère son adresse</span>
+			<span lang="gb">On GitHub, {{userA}} registers a new project, for instance uding the name <span class="code">tutorielGit</span> and copy its address.</span>
+		</p>
 		<img src="url_repo.png"></img>
-		<p>{{userA}} référence ensuite localement ce dépôt comme dépôt distant associé à ce projet.</p>
+		<p>
+			<span lang="fr">{{userA}} référence ensuite localement ce dépôt comme dépôt distant associé à ce projet.</span>
+			<span lang="gb">{{userA}} adds the remote repository to the local repository.</span>
+		</p>
 		<pre>git remote add origin https://github.com/{{userA}}/tutorielGit.git</pre>
-		<p>{{UserA}} pousse sa révision sur le dépôt distant.</p>
+		<p>
+			<span lang="fr">{{UserA}} pousse sa révision sur le dépôt distant.</span>
+			<span lang="gb">{{UserA}} pushes the revision onto the remote repository.</span>
+		</p>
 		<pre>git push origin master</pre>
-		<p>La console affiche un message validant l'envoie de cette révision. Sur GitHub, dans le projet <span class="code">tutorielGit</span>, la version apparaît également, ainsi que l'identité de l'utilisateur qui l'a poussée sur le serveur.</p>
-		<input class="ui button" value="Passer à l'étape suivante" name="step4">
+		<p>
+			<span lang="fr">La console affiche un message validant l'envoie de cette révision. Sur GitHub, dans le projet <span class="code">tutorielGit</span>, la version apparaît également, ainsi que l'identité de l'utilisateur qui l'a poussée sur le serveur.</span>
+			<span lang="gb">The terminal displays a confirmation that the revision was successfully pushed online. On GitHub, in the project <span class="code">tutorielGit</span>, the revisions is now listed along with the identity of the user who pushed it.</span>
+		</p>
+		<button class="ui button" name="step4">
+			<span lang="fr">Passer à l'étape suivante</span>
+			<span lang="gb">Proceed to next step</span>
+		</button>
 	</div>
+	
 	<div class=" title">
 	<i class="dropdown icon"></i>
-	Ajout des collaborateurs
+		<span lang="fr">Ajout des collaborateurs</span>
+		<span lang="gb">Adding collaborators</span>
 	</div>
 	<div class="content">
-		<p>{{userA}} enregistre {{userB}} comme collaborateur dans le projet sur GitHub.</p>
-		<img src="register_user.png" width="100%"></src>
-		<p>{{userB}} se rend dans son workspace Eclipse et récupère une copie du projet à partir de GitHub</p>
+		<p>
+			<span lang="fr">{{userA}} enregistre {{userB}} comme collaborateur dans le projet sur GitHub.</span>
+			<span lang="gb">{{userA}} registers {{userB}} as a collaborator of the project on GitHub.</span>
+		</p>
+		<img src="register_user.png" width="800px"></src>
+		<p>
+			<span lang="fr">{{userB}} se rend dans son workspace Eclipse et récupère une copie du projet à partir de GitHub</span>
+			<span lang="gb">{{userB}} navigates to its Eclipse workspace directory and clones the project from GitHub</span>
+		</p>
 		<pre>git clone https://github.com/{{userA}}/tutorielGit.git</pre>
-		<p>Une fois le projet téléchargé, {{userB}} l'importe dans Eclipse en utilisant le menu
+		<p>
+			<span lang="fr">Une fois le projet téléchargé, {{userB}} l'importe dans Eclipse en utilisant le menu&nbsp;</span>
+			<span lang="gb">Once cloned, the project can be imported from Eclipse using the menu&nbsp;</span>
 			<span class="code">File</span>
 			<i class="right angle icon divider"></i>
 			<span class="code">Import...</span>
@@ -220,403 +308,326 @@
 			<i class="right angle icon divider"></i>
 			<span class="code">Existing projects into workspace</span>
 		</p>
-		<p>{{userB}} vérifie que le projet compile et s'exécute correctement sur sa machine.</p>
+		<p>
+			<span lang="fr">{{userB}} vérifie que le projet compile et s'exécute correctement sur sa machine.</span>
+			<span lang="gb">{{userB}} checks that the project compiles and runs.</span>
+		</p>
 		<div class="ui icon message">
 		  <i class="fas fa-chess-pawn fa-5x"></i>
 		  <div class="content">
 			<div class="header">
-			  Bravo {{userA}} et {{userB}} !
+				<span lang="fr">Bravo {{userA}} et {{userB}} !</span>
+				<span lang="gb">Congratulations {{userA}} and {{userB}}!</span>
 			</div>
-			<p>Vous avez atteint une première étape dans la collaboration. Vous savez partager un projet.</p>
+			<p>
+				<span lang="fr">Vous avez atteint une première étape dans la collaboration. Vous savez partager un projet.</span>
+				<span lang="gb">You've reached a first step of collaboration: you've learned how to share a project.</span>
+			</p>
 		  </div>
 		</div>
-		<input class="ui button" value="Passer à l'étape suivante" name="step5">
+		<button class="ui button" name="step5">
+			<span lang="fr">Passer à l'étape suivante</span>
+			<span lang="gb">Proceed to next step</span>
+		</button>
 	</div>
 
 	<div class=" title">
 	<i class="dropdown icon"></i>
-	<em>Workflow</em> simple (de type SVN)
+		<span lang="fr"><em>Workflow</em> simple (de type SVN)</span>
+		<span lang="gb">Simple workflow (SVN-type)</span>
 	</div>
 	<div class="content">
-		<p>Dans Eclipse, {{userB}} modifie le projet en ajoutant la possibilité de quitter l'application au clic sur l'icône  <i class="fas fa-times"></i> de la fenêtre.</p>
-		<p>{{userB}} ajoute cette nouvelle modification dans l'index de son dépôt.</p>
+		<p>
+			<span lang="fr">Dans Eclipse, {{userB}} modifie le projet en ajoutant la possibilité de quitter l'application au clic sur l'icône  <i class="fas fa-times"></i> de la fenêtre.</span>
+			<span lang="gb">In Eclipse, {{userB}} adds to the project a functionality to quit the application on clicking on the <i class="fas fa-times"></i> icon of the window.</span>
+		</p>
+		<p>
+			<span lang="fr">{{userB}} ajoute cette nouvelle modification dans l'index de son dépôt.</span>
+			<span lang="gb">{{userB}} stages this modification in the local repository index.</span>
+		</p>
 		<pre>git add src/tuto_git/Application.java</pre>
-		<p>{{userB}} valide cette modification dans une nouvelle révision.</p>
+		<p>
+			<span lang="fr">{{userB}} valide cette modification dans une nouvelle révision.</span>
+			<span lang="gb">{{userB}} commits this modification in a new revision.</span>
+		</p>
 		<pre>git commit -m "ajout: sortie de l'app à la fermeture de la fenêtre"</pre>
-		<p>Enfin, {{userB}} synchronise cette nouvelle révision avec le dépôt distant</p>
+		<p>
+			<span lang="fr">Enfin, {{userB}} synchronise cette nouvelle révision avec le dépôt distant</span>
+			<span lang="gb">Finally, {{userB}} syncs this new revision with the remote repository.</span>
+		</p>
 		<pre>git push origin master</pre>
-		<p>{{userA}} s'informe de l'état de son dépôt local relativement à la version de tête sur le dépôt distant.</p>
+		<p>
+			<span lang="fr">{{userA}} s'informe de l'état de son dépôt local relativement à la version de tête sur le dépôt distant.</span>
+			<span lang="gb">Meanwhile, {{userA}} checks for any new revision on the remote repository.</span>
+		</p>
 		<pre>git fetch</pre>
-		<p>{{userA}} constate que le projet a progressé. Il synchronise son dépôt local avec la nouvelle révision sur le dépôt distant.</p>
+		<p>
+			<span lang="fr">{{userA}} constate que le projet a progressé. Il synchronise son dépôt local avec la nouvelle révision sur le dépôt distant.</span>
+			<span lang="gb">{{userA}} is informed that the project has progressed and the local revision is behind the revision on GitHub. {{userA}} pulls the head revision onto the local repository.</span>
+		</p>
 		<pre>git pull origin master</pre>
+		<p>
+			<span lang="fr">Git informe {{userA}} que le projet peut être mis à jour localement en "avance rapide", Cela signifie qu'il y a un chemin direct de modifications du code entre sa version locale et la tête sur le dépôt distant.</span>
+			<span lang="gb">Git informs {{userA}} that the project locally can be updated fast-forwardly. That means there is a straight path of modifications from the local revision to the new head on GitHub.</span>
+		</p>
+		<p>
+			<span lang="fr">La nouvelle révision est téléchargée et remplace la précédente. {{userA}} et {{userB}} sont désormais en phase.</span>
+			<span lang="gb">The new revision is downloaded and replaces the former head. {{userA}} and {{userB}} are now on sync.</span>
+		</p>
 		<div class="ui icon message">
 		  <i class="fas fa-chess-knight fa-5x"></i>
 		  <div class="content">
 			<div class="header">
-			  Bravo {{userA}} et {{userB}} !
+				<span lang="fr">Bravo {{userA}} et {{userB}} !</span>
+				<span lang="gb">Congratulations {{userA}} and {{userB}}!</span>
 			</div>
-			<p>Vous avez atteint une deuxième étape dans la collaboration. Vous savez collaborer sur un projet en suivant une progression synchrone.</p>
+			<p>
+				<span lang="fr">Vous avez atteint une deuxième étape dans la collaboration. Vous savez collaborer sur un projet en suivant une progression synchrone.</span>
+				<span lang="gb">You have now reached a second step of collaboration: you've learned how to collaborate in a project following a synchronous progression. But git has a lot more to offer! Let's carry on the training.</span>
+			</p>
 		  </div>
 		</div>
-		<input class="ui button" value="Passer à l'étape suivante" name="step6">
+		<button class="ui button" name="step6">
+			<span lang="fr">Passer à l'étape suivante</span>
+			<span lang="gb">Proceed to next step</span>
+		</button>
 	</div>
 
 	<div class=" title">
 	<i class="dropdown icon"></i>
-	Restauration locale d'un ou plusieurs fichiers
+		<span lang="fr">Restauration locale d'un ou plusieurs fichiers</span>
+		<span lang="gb">Local recovery of one or several files</span>
 	</div>
 	<div class="content">
-	<p>Dans Eclipse, {{userA}} modifie le projet pour le rendre invalide en supprimant une ligne ou une bloc de code dans la classe <span class="code">Application</span>.</p>
-	<p>{{userA}} constate les modifications entre son fichier et la version enregistrée dans l'index.</p>
+	<p>
+		<span lang="fr">Dans Eclipse, {{userA}} modifie le projet pour le rendre invalide en supprimant une ligne ou une bloc de code dans la classe <span class="code">Application</span>.</span>
+		<span lang="gb">In Eclipse, {{userA}} changes one or several lines in the <span class="code">Application</span> class so as to make the code invalid.</span>
+	</p>
+	<p>
+		<span lang="fr">{{userA}} constate les modifications entre son fichier et la version enregistrée dans l'index.</span>
+		<span lang="gb">{{userA}} checks the differences between the working copy and head revision.</span>
+	</p>
 	<pre>git diff</pre>
-	<p>{{userA}} récupère la version sauvegardée de son fichier à partir de son dépôt local</p>
+	<p>
+		<span lang="fr">{{userA}} récupère la version sauvegardée de son fichier à partir de son dépôt local</span>
+		<span lang="gb">{{userA}} restores the modified file from the local repository.</span>
+	</p>
 	<pre>git checkout src/tuto_git/Application</pre>
-	<p>Dans Eclipse, {{userA}} vérifie que le fichier a bien été restauré à partir de la dernière révision.</p>
-	<input class="ui button" value="Passer à l'étape suivante" name="step7">
+	<p>
+		<span lang="fr">Dans Eclipse, {{userA}} vérifie que le fichier a bien été restauré à partir de la dernière révision.</span>
+		<span lang="gb">In Eclipse, {{userA}} checks the code has been reverted to its former version.</span>
+	</p>
+	<button class="ui button" name="step7">
+		<span lang="fr">Passer à l'étape suivante</span>
+		<span lang="gb">Proceed to next step</span>
+	</button>
 	</div>
 
 	<div class="title">
 	<i class="dropdown icon"></i>
-	Travail collaboratif sans conflit
+		<span lang="fr">Travail collaboratif sans conflit</span>
+		<span lang="gb">Collaborative work without conflicts</span>
 	</div>
 	<div class="content">
-		<p>{{userA}} introduit une nouvelle modification sur le projet en ajoutant dans la classe <span class="code">Application</span> l'instruction <span class="code">setLocationRelativeTo(null)</span> permettant de centrer la fenêtre par rapport à l'écran.</p>
-		<p>En parallèle {{userB}} introduit une nouvelle modification sur le projet en modifiant la taille du bouton dans la classe <span class="code">Vue</span>.</p>
-		<p>{{userA}} et {{userB}} valident tous les deux localement leur modification</p>
-		<p>Pour {{userA}} :</p>
+		<p>
+			<span lang="fr">{{userA}} introduit une nouvelle modification sur le projet en ajoutant dans la classe <span class="code">Application</span> l'instruction <span class="code">setLocationRelativeTo(null)</span> permettant de centrer la fenêtre par rapport à l'écran.</span>
+			<span lang="gb">{{userA}} introduces a new change in the project by adding into the class <span class="code">Application</span> the following instruction <span class="code">setLocationRelativeTo(null)</span> that allows to center the application window relative to the screen.</span>
+		</p>
+		<p>
+			<span lang="fr">En parallèle {{userB}} introduit une nouvelle modification sur le projet en modifiant la taille du bouton dans la classe <span class="code">Vue</span> à 120*120 pixels.</span>
+			<span lang="gb">Meanwhile, {{userB}} also introduces another change on the project by modifying the size of the button in the class <span class="code">Vue</span> to 120*120 pixels.</span>
+		</p>
+		<p>
+			<span lang="fr">{{userA}} et {{userB}} valident tous les deux localement leur modification</span>
+			<span lang="gb">{{userA}} and {{userB}} both commit their changes.</span>
+		</p>
+		<p>
+			<span lang="fr">Pour {{userA}} :</span>
+			<span lang="gb">{{userA}}:</span>
+		</p>
 		<pre>git add src/tuto_git/Application.java
 git commit -m "ajout du centrage de la fenêtre"</pre>
-		<p>Pour {{userB}} :</p>
+		<p>
+			<span lang="fr">Pour {{userB}} :</span>
+			<span lang="gb">{{userB}}:</span>
+		</p>
 		<pre>git add src/tuto_git/Vue.java
 git commit -m "modification de la taille du bouton"</pre>
-		<p>D'abord, {{userA}} pousse sa révision sur GitHub.</p>
+		<p>
+			<span lang="fr">D'abord, {{userA}} pousse sa révision sur GitHub.</span>
+			<span lang="gb">First, {{userA}} pushes his/her revision on GitHub.</span>
+		</p>
 		<pre>git push origin master</pre>
-		<p>Ensuite, {{userB}} pousse sa révision sur GitHub.</p>
+		<p>
+			<span lang="fr">Ensuite, {{userB}} pousse sa révision sur GitHub.</span>
+			<span lang="gb">Then, {{userB}} pushes his/her revision on GitHub.</span>
+		</p>
 		<pre>git push origin master</pre>
 		<div class="ui negative message">
 		  <div class="header">
-			L'envoi est rejeté par le serveur !
+			<span lang="fr">L'envoi est rejeté par le serveur !</span>
+			<span lang="gb">The revision is rejected by the remote repository!</span>
 		  </div>
 		  <p>
-		{{userA}} et {{userB}} ont fait progresser le projet chacun de leur côté en parallèle. Le projet a divergé : ils sont chacun sur une branche différente. Il est nécessaire de fusionner ces branches divergentes pour retrouver l'unicité du projet.
+			<span lang="fr">{{userA}} et {{userB}} ont fait progresser le projet chacun de leur côté en parallèle. Le projet a divergé : ils sont chacun sur une branche différente. Il est nécessaire de fusionner ces branches divergentes pour retrouver l'unicité du projet.</span>
+			<span lang="gb">{{userA}} and {{userB}} have moved the project forward individually. The project has therefore diverged: each user is actually working now on a separate branch. These diverging branches need to be merged.</span>
 		  </p>
 		</div>
-		<p>{{userB}} récupère la dernière révision depuis le serveur</p>
+		<p>
+			<span lang="fr">{{userB}} récupère la dernière révision depuis le serveur</span>
+			<span lang="gb">{{userB}} pulls the last revision from the remote repository.</span>
+		</p>
 		<pre>git pull origin master</pre>
-		<p>Lorsque la récupération s'est effectuée, la fusion entre les deux branches se fait de manière automatique car aucun conflit n'est détecté.</p>
-		<p>{{userB}} peut désormais pousser sa révision sur le serveur, car elle intègre désormais les modifications faites en parallèle par {{userA}}.</p>
+		<p>
+			<span lang="fr">Lorsque la récupération s'est effectuée, la fusion entre les deux branches se fait de manière automatique car aucun conflit n'est détecté. En effet, les modifications ont été effectuées à des endroits différents dans le code.</span>
+			<span lang="gb">Once the remote head revision on GitHub is downloaded, the local and remote revisions are merged seamlessly, since no conflict has been detected. Indeed, the project was modified by the users on different locations in the code.</span>
+		</p>
+		<p>
+			<span lang="fr">{{userB}} peut désormais pousser sa révision sur le serveur, car elle intègre désormais les modifications faites en parallèle par {{userA}}.</span>
+			<span lang="gb">{{userB}} now detains the most foward revision since it includes the changes of {{userA}}. This revision must be pushed onto the remote repository.</span>
+		</p>
+		<p>
+			<span lang="fr">{{userA}} est désormais en retard sur la tête du projet et doit penser à récupérer la dernière révision à partir du dépôt distant.</span>
+			<span lang="gb">{{userA}} must remember he/she is now behind the head revision of the project and therefore he/she will need to pull from the remote repository.</span>
+		</p>
 		<pre>git push origin master</pre>
 		<div class="ui icon message">
 		  <i class="fas fa-chess-bishop fa-5x"></i>
 		  <div class="content">
 			<div class="header">
-			  Bravo {{userA}} et {{userB}} !
+				<span lang="fr">Bravo {{userA}} et {{userB}} !</span>
+				<span lang="gb">Congratulations {{userA}} and {{userB}}!</span>
 			</div>
-			<p>Vous avez atteint une troisième étape dans la collaboration. Les développements de branches parallèles sont quasi impossible à empêcher lorsque plusieurs personnes travaillent sur un même projet. Vous avez appris à résoudre une fusion simple, lorsqu'aucun conflit n'apparaît.</p>
+			<p>
+				<span lang="fr">Vous avez atteint une troisième étape dans la collaboration. Les développements de branches parallèles sont quasi impossible à empêcher lorsque plusieurs personnes travaillent sur un même projet. Vous avez appris à résoudre une fusion simple, lorsqu'aucun conflit n'apparaît.</span>
+				<span lang="gb">you've reached a third step of collaboration. Branching the project to develop separate features in parallel is something that is hardly avoidable in a project. You've learned how to cope with a simple merge, where changes are not colliding with one another.</span>
+			</p>
 		  </div>
 		</div>
-		<input class="ui button" value="Passer à l'étape suivante" name="step8">
-
+		<button class="ui button" name="step8">
+			<span lang="fr">Passer à l'étape suivante</span>
+			<span lang="gb">Proceed to next step</span>
+		</button>
 	</div>
 
 	<div class="title">
 	<i class="dropdown icon"></i>
-	Gestion de conflit
+		<span lang="fr">Gestion de conflit</span>
+		<span lang="gb">Conflict resolution</span>
 	</div>
 	<div class="content">
-		<p>{{userA}} et {{userB}} modifient en parallèle la classe <span class="code">Application</span> en ajoutant un titre différent à la fenêtre avec la méthode <span class="code">setTitle</span>.
-		<p>{{userA}} et {{userB}} valident tous les deux localement leur modification</p>
+		<p>
+			<span lang="fr">{{userA}} et {{userB}} modifient en parallèle la classe <span class="code">Application</span> en ajoutant un titre différent à la fenêtre avec la méthode <span class="code">setTitle</span>.</span>
+			<span lang="gb">{{userA}} and {{userB}} make modifications in parallel to the class  <span class="code">Application</span> by setting the window title to a different value using the method <span class="code">setTitle</span>.</span>
+		</p>
+		<p>
+			<span lang="fr">{{userA}} et {{userB}} valident tous les deux localement leur modification</span>
+			<span lang="gb">{{userA}} and {{userB}} both commit their changes locally.</span>
+		</p>
 		<pre>git add src/tuto_git/Application.java
 git commit -m "ajout d'un titre à la fenêtre"</pre>
-		<p>D'abord, {{userB}} pousse sa révision sur GitHub.</p>
+		<p>
+			<span lang="fr">D'abord, {{userB}} pousse sa révision sur GitHub.</span>
+			<span lang="gb">First, {{userB}} pushes his/her revision onto GitHub.</span>
+		</p>
 		<pre>git push origin master</pre>
-		<p>Ensuite, {{userA}} pousse sa révision sur GitHub.</p>
+		<p>
+			<span lang="fr">Ensuite, {{userA}} pousse sa révision sur GitHub.</span>
+			<span lang="gb">Then, {{userA}} pushes his/her revision on GitHub.</span>
+		</p>
 		<pre>git push origin master</pre>
 		<div class="ui negative message">
 		  <div class="header">
-			L'envoi est à nouveau rejeté par le serveur !
+			<span lang="fr">L'envoi est à nouveau rejeté par le serveur !</span>
+			<span lang="gb">The revision is rejected by the remote repository!</span>
 		  </div>
 		  <p>
-		Comme précédemment, {{userA}} et {{userB}} ont fait diverger le projet et il faut désormais fusionner leurs modifications.
+			<span lang="fr">Comme précédemment, {{userA}} et {{userB}} ont fait diverger le projet et il faut désormais fusionner leurs modifications.</span>
+			<span lang="gb">As before, the project has diverged into two separate branches which must now be merged.</span>
 		  </p>
 		</div>
-		<p>{{userA}} récupère la dernière révision à partir du serveur.</p>
+		<p>
+			<span lang="fr">{{userA}} récupère la dernière révision à partir du serveur.</span>
+			<span lang="gb">{{userA}} pulls the latest revision from the remote repository.</span>
+		</p>
     <pre>git pull origin master</pre>
     <div class="ui negative message">
       <div class="header">
-      Un conflit est détecté !
+		<span lang="fr">Un conflit est détecté !</span>
+		<span lang="gb">A conflict is detected!</span>
       </div>
-      <p>Les fichiers en conflit ont été modifiés par Git et attendent une résolution manuelle de la part de l'utilisateur.</p>
+      <p>
+		<span lang="fr">Les fichiers en conflit ont été modifiés par Git et attendent une résolution manuelle de la part de l'utilisateur.</span>
+		<span lang="gb">Unlike in the previous step, the modifications are colocated and therefore git is unable to merge the branches automatically and will rely on the user to do so. The conflict(s) is/are pointed out by git inside the conflicting files.</span>
+	  </p>
     </div>
-		<p>{{userA}} s'informe des conflits</p>
+		<p>
+			<span lang="fr">{{userA}} s'informe des conflits</span>
+			<span lang="gb">{{userA}} finds out more about the conflict(s) and identifies the files where an action is required.</span>
+		</p>
 		<pre>git diff</pre>
-		<p>Dans l'éditeur d'Eclipse, {{userA}} résoud le conflit directement dans le code en "nettoyant" les marqueurs laissés par Git.</p>
-		<p>Ensuite, {{userA}} peut versionner cette nouvelle révision et la pousser sur GitHub.</p>
+		<p>
+			<span lang="fr">Dans l'éditeur d'Eclipse, {{userA}} résoud le conflit directement dans le code en "nettoyant" les marqueurs laissés par Git.</span>
+			<span lang="gb">In Eclipse, {{userA}} solves the conflict(s) by manually and directly modifying the code and cleaning the conflict marker(s).</span>
+		</p>
+		<p>
+			<span lang="fr">Ensuite, {{userA}} peut versionner cette nouvelle révision et la pousser sur GitHub.</span>
+			<span lang="gb">Then, {{userA}} is allowed to commit this new revision and push it onto the remote repository.</span>
+		</p>
 		<pre>git add src/tuto_git/Application.java
 git commit -m "Conflit résolu sur le titre de la fenêtre
 git push origin master</pre>
-		<p>{{userA}} vérifie sur GitHub que la dernière révision est la sienne.</p>
-		<p>{{userB}} récupère la dernière révision qui inclus la résolution du conflit.</p>
-		<pre>git pull origin master</pre>
-		<div class="ui icon message">
-		 <i class="fas fa-chess-rook fa-5x"></i>
-		  <div class="content">
-			<div class="header">
-			  Bravo {{userA}} et {{userB}} !
-			</div>
-			<p>Vous avez atteint une quatrième étape dans la collaboration. Vous savez désormais résoudre un conflit sans paniquer, lorsque deux collaborateurs ont apporté des modifications dans le(s) même(s) fichier(s).</p>
-		  </div>
-		</div>
-		<input class="ui button" value="Terminer ma formation" name="end" ng-click='award=true'>
-	</div>
-	
-	<!-- à intégrer -->
-	<div class="title">
-	<i class="dropdown icon"></i>
-	Set-up
-	</div>
-	<div class="content">
-	<p>The first step consists in {{userA}} and {{userB}} signing up to an account on GitHub <i class="github icon"></i>at the following address <a href="https://github.com/" target="blank">https://github.com<i class="external link alternate icon"></i></a></p>
-	<p>Then, {{userA}} creates a new Java project on Eclipse and imports the sources that can be downloaded here:<a href="tuto_git.zip">tuto_git.zip&nbsp;<i class="fas fa-file-archive"></i></a></p>
-
-	<p>{{userA}} checks that the project compiles and runs successfully.</p>
-	<input class="ui button" value="Proceed to next step" name="step3">
-	</div>
-
-	<div class=" title">
-	<i class="dropdown icon"></i>
-		Creating a repository and push on GitHub
-	</div>
-	<div class=" content">
-		<p>Using a terminal, {{userA}} navigates to the project directory and initialises a new git local repository.</p>
-		<pre>git init</pre>
-		<p>A message <!--i class="fas fa-paperclip help" data-content="Affichage du message ici..."></i--> in the terminal confirms that an empty git repository has been initialised in the current directory.</p>
-		<p>The next step consists in telling git which file(s) should be excluded from versionning. To that end, {{userA}} creates a new text file <span class="code">.gitignore</span>.</p>
-		<pre>touch .gitignore</pre>
-    <p>{{userA}} edits the file with a text editor and adds the following patterns (compiled bytecode and personnal Eclipse parameters).</p>
-		<pre>/bin/
-/.settings/</pre>
-		<p>{{userA}} saves and quits.</p>
-		<p>{{userA}} adds all the files/directories to be tracked to the repository index.<p>
-		<pre>git add -A</pre>
-		<p>{{userA}} checks that all the project files were successfully added to the index, except those ignored. In the git terminolgy, these files are now staged.</p>
-		<pre>git status</pre>
-		<p>{{userA}} commits these changes within a first revision.<p>
-		<pre>git commit -m "Project's first commit"</pre>
-		<p>The revision is acknowledged by git, and receives a hash (the equivalent of a revision number). This revision is now the head of the local repository.</p>
-		<p>{{userA}} checks again the status of the local repository.</p>
-		<pre>git status</pre>
-		<p>For now, there are no differences between the working copy and the head revision. In the git terminology, the working copy is clean.</p>
-		<p>Since it has now a head revision, the local repository may be synced to a remote repository.</p>
-		<p>The first step is to create a new repository online on GitHub.</p>
-		<p>On GitHub, {{userA}} registers a new project, for instance uding the name <span class="code">tutorielGit</span> and copy its address.</p>
-		<img src="url_repo.png"></img>
-		<p>{{userA}} adds the remote repository to the local repository.</p>
-		<pre>git remote add origin https://github.com/{{userA}}/tutorielGit.git</pre>
-		<p>{{UserA}} pushes the revision onto the remote repository.</p>
-		<pre>git push origin master</pre>
-		<p>The terminal displays a confirmation that the revision was successfully pushed online. On GitHub, in the project <span class="code">tutorielGit</span>, the revisions is now listed along with the identity of the user who pushed it.</p>
-		<input class="ui button" value="Proceed to next step" name="step4">
-	</div>
-
-	<div class=" title">
-	<i class="dropdown icon"></i>
-	Adding collaborators
-	</div>
-	<div class="content">
-		<p>{{userA}} registers {{userB}} as a collaborator of the project on GitHub.</p>
-		<img src="register_user.png" width="100%"></src>
-		<p>{{userB}} navigates to its Eclipse workspace directory and clones the project from GitHub</p>
-		<pre>git clone https://github.com/{{userA}}/tutorielGit.git</pre>
-		<p>Once cloned, the project can be imported from Eclipse using the menu 
-			<span class="code">File</span>
-			<i class="right angle icon divider"></i>
-			<span class="code">Import...</span>
-			<i class="right angle icon divider"></i>
-			<span class="code">General</span>
-			<i class="right angle icon divider"></i>
-			<span class="code">Existing projects into workspace</span>
+		<p>
+			<span lang="fr">{{userA}} vérifie sur GitHub que la dernière révision est la sienne.</span>
+			<span lang="gb">{{userA}} checks on GitHub that the head revision is now his/her revision.</span>
 		</p>
-		<p>{{userB}} checks that the project compiles and runs.</p>
-		<div class="ui icon message">
-		  <i class="fas fa-chess-pawn fa-5x"></i>
-		  <div class="content">
-			<div class="header">
-			  Congratulations {{userA}} and {{userB}} !
-			</div>
-			<p>You've reached a first step of collaboration: you've learned how to share a project.</p>
-		  </div>
-		</div>
-		<input class="ui button" value="Proceed to next step" name="step5">
-	</div>
-
-	<div class=" title">
-	<i class="dropdown icon"></i>
-	Simple workflow (SVN-type)
-	</div>
-	<div class="content">
-		<p>In Eclipse, {{userB}} adds to the project a functionality to quit the application on clicking on the <i class="fas fa-times"></i> icon of the window.</p>
-		<p>{{userB}} stages this modification in the local repository index.</p>
-		<pre>git add src/tuto_git/Application.java</pre>
-		<p>{{userB}} commits this modification in a new revision.</p>
-		<pre>git commit -m "App now exiting on closing window."</pre>
-		<p>Finally, {{userB}} syncs this new revision with the remote repository.</p>
-		<pre>git push origin master</pre>
-		<p>Meanwhile, {{userA}} checks for any new revision on the remote repository.</p>
-		<pre>git fetch</pre>
-		<p>{{userA}} is informed that the project has progressed and the local revision is behind the revision on GitHub. {{userA}} pulls the head revision onto the local repository.</p>
-		<pre>git pull origin master</pre>
-		<p>Git informs {{userA}} that the project locally can be updated fast-forwardly. That means there is a straight path of modifications from the local revision to the new head on GitHub.</p>
-		<p>The new revision is downloaded and replaces the former head. {{userA}} and {{userB}} are now on sync.</p>
-		<div class="ui icon message">
-		  <i class="fas fa-chess-knight fa-5x"></i>
-		  <div class="content">
-			<div class="header">
-			  Congratulations {{userA}} and {{userB}} !
-			</div>
-			<p>You have now reached a second step of collaboration: you've learned how to collaborate in a project following a synchronous progression. But git has a lot more to offer! Let's carry on the training.</p>
-		  </div>
-		</div>
-		<input class="ui button" value="Proceed to next step" name="step6">
-	</div>
-
-	<div class=" title">
-	<i class="dropdown icon"></i>
-	Local recovery of one or several files
-	</div>
-	<div class="content">
-	<p>In Eclipse, {{userA}} changes one or several lines in the <span class="code">Application</span> class so as to make the code invalid.</p>
-	<p>{{userA}} checks the differences between the working copy and head revision.</p>
-	<pre>git diff</pre>
-	<p>{{userA}} restores the modified file from the local repository.</p>
-	<pre>git checkout src/tuto_git/Application</pre>
-	<p>In Eclipse, {{userA}} checks the code has been reverted to its former version.</p>
-	<input class="ui button" value="Proceed to next step" name="step7">
-	</div>
-
-	<div class="title">
-	<i class="dropdown icon"></i>
-	Collaborative work without conflicts
-	</div>
-	<div class="content">
-		<p>{{userA}} introduces a new change in the project by adding into the class <span class="code">Application</span> the following instruction <span class="code">setLocationRelativeTo(null)</span> that allows to center the application window relative to the screen.</p>
-		<p>Meanwhile, {{userB}} also introduces another change on the project by modifying the size of the button in the class <span class="code">Vue</span> to 120*120 pixels.</p>
-		<p>{{userA}} and {{userB}} both commit their changes.</p>
-		<p>{{userA}}:</p>
-		<pre>git add src/tuto_git/Application.java
-git commit -m "ajout du centrage de la fenêtre"</pre>
-		<p>{{userB}}:</p>
-		<pre>git add src/tuto_git/Vue.java
-git commit -m "modification de la taille du bouton"</pre>
-		<p>First, {{userA}} pushes his/her revision on GitHub.</p>
-		<pre>git push origin master</pre>
-		<p>Then, {{userB}} pushes his/her revision on GitHub.</p>
-		<pre>git push origin master</pre>
-		<div class="ui negative message">
-		  <div class="header">
-			The revision is rejected by the remote repository!
-		  </div>
-		  <p>
-		{{userA}} and {{userB}} have moved the project forward individually. The project has therefore diverged: each user is actually working now on a separate branch. These diverging branches need to be merged.</p>
-		</div>
-		<p>{{userB}} pulls the last revision from the remote repository.</p>
-		<pre>git pull origin master</pre>
-		<p>Once the remote head revision on GitHub is downloaded, the local and remote revisions are merged seamlessly, since no conflict has been detected. Indeed, the project was modified by the users on different locations in the code.</p>
-		<p>{{userB}} now detains the most foward revision since it includes the changes of {{userA}}. This revision must be pushed onto the remote repository.</p>
-		<pre>git push origin master</pre>
-		<p>{{userA}} must remember he/she is now behind the head revision of the project and therefore he/she will need to pull from the remote repository.</p>
-		<div class="ui icon message">
-		  <i class="fas fa-chess-bishop fa-5x"></i>
-		  <div class="content">
-			<div class="header">
-			  Congratulations {{userA}} and {{userB}} !
-			</div>
-			<p>you've reached a third step of collaboration. Branching the project to develop separate features in parallel is something that is hardly avoidable in a project. You've learned how to cope with a simple merge, where changes are not colliding with one another.</p>
-		  </div>
-		</div>
-		<input class="ui button" value="Proceed to next step" name="step8">
-
-	</div>
-
-	<div class="title">
-	<i class="dropdown icon"></i>
-	Conflict resolution
-	</div>
-	<div class="content">
-		<p>{{userA}} and {{userB}} make modifications in parallel to the class  <span class="code">Application</span> by setting the window title to a different value using the method <span class="code">setTitle</span>.
-		<p>{{userA}} and {{userB}} both commit their changes locally.</p>
-		<pre>git add src/tuto_git/Application.java
-git commit -m "The app window now has a title"</pre>
-		<p>First, {{userB}} pushes his/her revision onto GitHub.</p>
-		<pre>git push origin master</pre>
-		<p>Then, {{userA}} pushes his/her revision on GitHub.</p>
-		<pre>git push origin master</pre>
-		<div class="ui negative message">
-		  <div class="header">
-			The revision is rejected by the remote repository!
-		  </div>
-		  <p>
-		As before, the project has diverged into two separate branches which must now be merged.
-		  </p>
-		</div>
-		<p>{{userA}} pulls the latest revision from the remote repository.</p>
-    <pre>git pull origin master</pre>
-    <div class="ui negative message">
-      <div class="header">
-      A conflict is detected !
-      </div>
-      <p>Unlike in the previous step, the modifications are colocated and therefore git is unable to merge the branches automatically and will rely on the user to do so. The conflict(s) is/are pointed out by git inside the conflicting files.</p>
-    </div>
-		<p>{{userA}} finds out more about the conflict(s) and identifies the files where an action is required.</p>
-		<pre>git diff</pre>
-		<p>In Eclipse, {{userA}} solves the conflict(s) by manually and directly modifying the code and cleaning the conflict marker(s).</p>
-		<p>Then, {{userA}} is allowed to commit this new revision and push it onto the remote repository.</p>
-		<pre>git add src/tuto_git/Application.java
-git commit -m "Conflict about the windows title has been solved"
-git push origin master</pre>
-		<p>{{userA}} checks on GitHub that the head revision is now his/her revision.</p>
-		<p>{{userB}} pulls the head revision (which includes the resolution of the conflict) from the remote repository.</p>
+		<p>
+			<span lang="fr">{{userB}} récupère la dernière révision qui inclus la résolution du conflit.</span>
+			<span lang="gb">{{userB}} pulls the head revision (which includes the resolution of the conflict) from the remote repository.</span>
+		</p>
 		<pre>git pull origin master</pre>
 		<div class="ui icon message">
 		 <i class="fas fa-chess-rook fa-5x"></i>
 		  <div class="content">
 			<div class="header">
-			  Congratulations {{userA}} and {{userB}} !
+			  <span lang="fr">Bravo {{userA}} et {{userB}} !</span>
+			  <span lang="gb">Congratulations {{userA}} and {{userB}}!</span>
 			</div>
-			<p>You've reached an important milestone in this training: You've learned how to solve a conflict without panicking!</p>
+			<p>
+				<span lang="fr">Vous avez atteint une quatrième étape dans la collaboration. Vous savez désormais résoudre un conflit sans paniquer, lorsque deux collaborateurs ont apporté des modifications dans le(s) même(s) fichier(s).</span>
+				<span lang="gb">You've reached an important milestone in this training: You've learned how to solve a conflict without panicking!</span>
+			</p>
 		  </div>
 		</div>
-		<input class="ui button" value="Claim my badge" name="end" ng-click='award=true'>
+		<button class="ui button" name="end" ng-click='award=true'>
+			<span lang="fr">Terminer ma formation</span>
+			<span lang="gb">Claim my badge</span>
+		</button>
 	</div>
 	
 	</div><!--fin de l'accordéon-->
-	
-	
-	<div ng-show="award" class="ui icon positive message">
-		  <i class="fas fa-trophy fa-3x"></i>
-		  <div class="content" style="padding-left:10px">
-			<div class="header">
-			  <h1>Ce tutoriel est terminé !</h1>
-			</div>
-			<p>Vous avez terminé ce tutoriel et vous êtes maintenant capable de collaborer sur un projet en utilisant un outil puissant et incontournable.</p>
-			<p>Cependant, Git est un outil très complexe et le maîtriser vous demandera de nombreuses années d'expérience !</p>
-		  </div>
-	</div>
 	
 	<div ng-show="award" class="ui icon positive message">
 	  <!--i class="fas fa-trophy fa-3x"></i-->
 	  <img width="128px" src="badges/badger.png">
 	  <div class="content" style="padding-left:10px">
 		<div class="header">
-		  <h1>you have completed this tutorial!</h1>
+		  <h1>
+			<span lang="fr">Ce tutoriel est terminé !</span>
+			<span lang="gb">you have completed this tutorial!</span>
+		  </h1>
 		</div>
-		<p>You have successfully completed this tutorial and you've upgraded to the rank of <b>badger</b>.</p>
-		<p>Congratulations!</p>
-		<p>The git badger is apt for productive collaboration with git. However, remeber git is a complex tool and many years of experience will be required before mastering every one of its features and subtleties!</p>
+		<p>
+			<span lang="fr">Vous avez terminé ce tutoriel et vous êtes maintenant capable de collaborer sur un projet en utilisant un outil puissant et incontournable. Cependant, Git est un outil très complexe et le maîtriser vous demandera de nombreuses années d'expérience !</span>
+			<span lang="gb">You have successfully completed this tutorial and you've upgraded to the rank of <b>badger</b>.<br/>Congratulations!<br/>The git badger is apt for productive collaboration with git. However, remeber git is a complex tool and many years of experience will be required before mastering every one of its features and subtleties!</span>
+		</p>
 	  </div>
 	</div>
-	<p ng-show="award"><a href='index.html'>Back to summary</a></p>
 	
+	<p ng-show="award"><a href='index.html'>
+		<span lang="fr">Retour au sommaire</span>
+		<span lang="gb">Back to summary</span>
+	</a></p>
 	
 </div><!--fin du container principal-->
 </body>
