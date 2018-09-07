@@ -38,7 +38,7 @@
 			 event.stopPropagation();
 		});
 
-		$('input').each(function() {
+		$('button').each(function() {
 			if ($(this).attr('name').startsWith('step'))
 				var step = parseInt($(this).attr('name').substring(4));
 				$(this).click(function() {
@@ -46,15 +46,48 @@
 				});
 		});
 
-		$('input[name=start]').click(function() {
+		$('button[name=start]').click(function() {
 			$('.ui.accordion').accordion('open', 1).accordion('close', 0);
 		});
 
-		$('input[name=end]').click(function() {
+		$('button[name=end]').click(function() {
 			$('.ui.accordion').accordion('close', 4).accordion('close others');;
 		});
 
-
+		var deflang;
+		//1st, look for a saved value in local storage
+		if (localStorage.getItem('lang')) {
+			deflang = localStorage.getItem('lang');
+		} else if (!deflang) { //Otherwise set default if not set already
+			deflang = 'gb';
+		}
+		selectLanguage(deflang);
+		
+		$('.ui.dropdown').dropdown({
+			onChange: function(val) {
+				var lang = $(val).attr('class').substring(0,2);
+				selectLanguage(lang);
+				//save, in case of reloading the page
+				localStorage.setItem('lang',lang);
+			}
+		});
+		
+		function selectLanguage(lang) {
+			//show and hide
+			$("span").each(function() {
+				if ($(this).is('[lang]')) {
+					if ($(this).attr('lang') != lang) {
+						$(this).hide();
+					} else {
+						$(this).show();
+					}
+				}
+				
+			});
+			//change dropdown
+			var langLib = $('.ui.dropdown .menu .item .'+lang).parent('.item').clone();
+			$('.ui.dropdown .text').empty().prepend(langLib);
+		}
 
 	});
 	
@@ -86,6 +119,22 @@
 </script>
 <body ng-app="app" ng-controller="ctrl">
 
+	<div style="float:right">
+		<div class="ui inline dropdown">
+			<div class="text">
+				<div class="item">
+					<i class="gb flag"></i>English
+				</div>
+			</div>
+			<i class="dropdown icon"></i>
+			<div class="menu">
+				<div class="item">
+					<i class="gb flag"></i>English
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<div class="ui text container">
 		<h1 class="ui dividing header">Branching with git</h1>
 		<p>In this tutorial, branching with git is used as a way of maintaining an already released application.</p>
@@ -98,31 +147,10 @@
 		</ul>
 	</div>
 
+	
+	
 	<div class="ui container">
 	<div class="ui styled fluid accordion">
-
-	<!--div class="active title">
-	<i class="dropdown icon"></i>
-	Getting started
-	</div>
-	<div class="active content">
-	<p>Before we start, please name one user.</p>
-	<form class="ui form">
-	<div class="fields">
-		<div class="five wide field">
-			<label>User</label>
-			<input name="userA" ng-model="userA" type="text" placeholder="username here" required="">
-		</div>
-	</div>
-	</form>
-	<div ng-show="userA==undefined" class="ui negative message">
-		<p>One user must be identified in order to proceed with the tutorial...</p>
-	</div>
-	<div ng-show="userA!=undefined&&userB!=undefined" class="ui positive message">
-		<p>{{userA}} is working on a project.</p>
-	</div>
-	<input ng-show="userA!=undefined&&userB!=undefined"  name="start" class="ui button" value="Start">
-	</div-->
 
 	<div class="active title">
 	<i class="dropdown icon"></i>
@@ -137,7 +165,9 @@
 git add -A
 git commit -m "First release of Youstache!"</pre>
 		
-		<input class="ui button" value="Proceed" name="start">
+		<button class="ui button" name="start">
+			Proceed to next Step
+		</button>
 	</div>
 
 	<div class="title">
@@ -162,7 +192,9 @@ git commit -m "First release of Youstache!"</pre>
 		<p>Commit those changes.</p>
 		<pre>git add -A
 git commit -m "New content for next release"</pre>
-		<input class="ui button" value="Proceed" name="step1">
+		<button class="ui button" name="step1">
+			Proceed to next Step
+		</button>
 	</div>
 	
 	<div class="title">
@@ -189,7 +221,9 @@ git commit -m "Fixed a bug where a misclick caused the moustache to move"</pre>
 			<p>This new version could be released in replacement of the buggy version.</p>
 		  </div>
 		</div>
-		<input class="ui button" value="Proceed" name="step2">
+		<button class="ui button" name="step2">
+			Proceed to next Step
+		</button>
 	</div>
 	
 	<div class="title">
@@ -217,7 +251,10 @@ git commit -m "Interaction model has been improved"</pre>
 			<p>The developments in this new branch are now complete. It is now time to merge the development branch with the master, and release the new version of Youstache!</p>
 		  </div>
 		</div>
-		<input class="ui button" value="Proceed" name="step3">
+		<button class="ui button" name="step3">
+			Proceed to next Step
+		</button>
+
 	</div>
 	
 	<div class="title">
@@ -285,7 +322,9 @@ git commit -m "Released version now integrates new features and content"</pre>
 		</script>
 		<p>Finally, the <i>development</i> branch is no more used and can, therefore be deleted.</p>
 		<pre>git branch -d development</pre>
-		<input class="ui button" value="Claim my badge" name="end" ng-click='award=true'>
+		<button class="ui button" name="end" ng-click='award=true'>
+			Claim my badge
+		</button>
 	</div>
 	
 	</div><!--fin de l'accordéon -->
