@@ -28,10 +28,7 @@
 <script>
 	$(document).ready(function() {
 
-    //TODO à supprimer
     $('.ui.accordion').accordion();
-
-    $('.help').popup();
 
 		$('.accordion .header').on('click', function(event) {
 			 event.stopPropagation();
@@ -53,17 +50,65 @@
 			$('.ui.accordion').accordion('close', 7).accordion('close others');;
 		});
 
-
-
+		var deflang;
+		//1st, look for a saved value in local storage
+		if (localStorage.getItem('lang')) {
+			deflang = localStorage.getItem('lang');
+		} else if (!deflang) { //Otherwise set default if not set already
+			deflang = 'fr';
+		}
+		selectLanguage(deflang);
+		
+		$('.ui.dropdown').dropdown({
+			onChange: function(val) {
+				var lang = $(val).attr('class').substring(0,2);
+				selectLanguage(lang);
+				//save, in case of reloading the page
+				localStorage.setItem('lang',lang);
+			}
+		});
+		
+		function selectLanguage(lang) {
+			//show and hide
+			$("p,span").filter(":not([data-lang='"+lang+"'])").hide();
+			$("p,span").filter("[data-lang='"+lang+"']").show();
+			//change dropdown
+			var langLib = $('.ui.dropdown .menu .item .'+lang).parent('.item').clone();
+			$('.ui.dropdown .text').empty().prepend(langLib);
+		}
 	});
 
 </script>
 <body ng-app="app" ng-controller="ctrl">
-
+	
+	
+	<div style="float:right">
+	<div class="ui inline dropdown">
+		<div class="text">
+			<div class="item">
+				<i class="gb flag"></i>English
+			</div>
+		</div>
+		<i class="dropdown icon"></i>
+		<div class="menu">
+			<div class="item">
+				<i class="fr flag"></i>Français
+			</div>
+			<div class="item">
+				<i class="gb flag"></i>English
+			</div>
+		</div>
+	</div>
+	</div>
+	
 	<div class="ui text container">
-		<h1 class="ui dividing header">Initiation à Git</h1>
-		<p>Un tutoriel pour 2 utilisateurs destiné à apprendre les rudiments de Git et du versionnage d'un projet.
-		</p>
+		<h1 class="ui dividing header">
+			<span data-lang="fr">Initiation à Git</span>
+			<span data-lang="gb">Git basics</span>
+		</h1>
+		
+		<p data-lang="fr">Un tutoriel pour 2 utilisateurs destiné à apprendre les rudiments de git et du versionnage d'un projet.</p>
+		<p data-lang="gb">A tutorial for 2 users to learn the basics of git and version control</p>
 	</div>
 
 	<div class="ui container">
@@ -71,7 +116,8 @@
 
 	<div class="active title">
 	<i class="dropdown icon"></i>
-	Avant de commencer ...
+		<span data-lang="fr">Avant de commencer ...</span>
+		<span data-lang="gb">Before we start...</span>
 	</div>
 	<div class="active content">
 	<p>Avant de commencer ce tutoriel, deux utilisateurs doivent être identifiés.</p>
@@ -335,8 +381,8 @@ git push origin master</pre>
 
     //initialisation
     $scope.userA = 'David';
-	  $scope.userB = 'Pierre';
-
+	$scope.userB = 'Pierre';
+	
 	$scope.award= false;
 
   });
