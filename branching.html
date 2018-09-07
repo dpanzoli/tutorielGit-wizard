@@ -5,6 +5,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"></script>
 <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+<script src="gitgraph.js/build/gitgraph.min.js"></script>
+<link rel="stylesheet" type="text/css" href="gitgraph.js/build/gitgraph.css" />
 <style>
   body {
     padding: 10px;
@@ -55,6 +57,31 @@
 
 
 	});
+	
+	var monTemplate = {
+	  colors: [ "#808080", "#3498DB", "#F00" ], 
+	  branch: {
+		lineWidth: 8,
+		spacingX: 50,
+		showLabel: true,            
+	  },
+	  commit: {
+		spacingY: -80,
+		dot: {
+		  size: 12
+		},
+		message: {
+		  displayAuthor: true,
+		  displayBranch: false,
+		  displayHash: true,
+		  font: "normal 12pt Arial"
+		},
+		shouldDisplayTooltipsInCompactMode: true, 
+		tooltipHTMLFormatter: function ( commit ) {
+		  return commit.message;
+		}
+	  }
+	};
 
 </script>
 <body ng-app="app" ng-controller="ctrl">
@@ -130,7 +157,7 @@ git commit -m "First release of Youstache!"</pre>
 		</p>
 		<p>Commit those changes.</p>
 		<pre>git add -A
-git commit -m "new content for next release"</pre>
+git commit -m "New content for next release"</pre>
 		<input class="ui button" value="Proceed" name="step1">
 	</div>
 	
@@ -194,8 +221,25 @@ git commit -m "Interaction model has been improved"</pre>
 	Merging two branches
 	</div>
 	<div class="content">
-		<p>At this stage, the history of your project could be represented by the graph below.</p>
-		<p><img src="project_graph.png" height="200px"></p>
+		<p>At this stage, the history of your project could be represented by the graph below (hover dots for commit texts).</p>
+		<canvas id="gitGraph" style="margin-top:-50px; margin-bottom:-75px;"></canvas>
+		<script>
+		
+			var gitgraph = new GitGraph({
+				template: "metro",
+				orientation: "horizontal",
+				mode: "compact",
+				template: monTemplate
+			});
+
+			var master = gitgraph.branch("master");		
+			master.commit("First release of Youstache!");
+			var newVersion = gitgraph.branch("newVersion")
+			newVersion.commit("New content for next release");
+			master.commit("Fixed a bug where a misclick caused the moustache to move");
+			newVersion.commit("Interaction model has been improved");
+			
+		</script>
 		<p>The modifications of newVersion are ready to be merged into the released Youstache! application.</p>
 		<pre>git checkout master
 git merge newVersion</pre>
@@ -212,7 +256,26 @@ git commit -m "Released version now integrates new features and content"</pre>
 		<li><i>graph</i> displays the history in a graph-like fashion</li>
 		</ul>
 		<p>You should figure the graph now looks something like the image below.</p>
-		<p><img src="project_graph_final.png" height="200px"></p>
+		<canvas id="gitGraphAfterMerge" style="margin-top:-50px; margin-bottom:-75px;"></canvas>
+		<script>
+		
+			var gitGraphAfterMerge = new GitGraph({
+				template: "metro",
+				orientation: "horizontal",
+				mode: "compact",
+				template: monTemplate,
+				elementId: "gitGraphAfterMerge"
+			});
+
+			var master = gitGraphAfterMerge.branch("master");		
+			master.commit("First release of Youstache!");
+			var newVersion = gitGraphAfterMerge.branch("newVersion")
+			newVersion.commit("New content for next release");
+			master.commit("Fixed a bug where a misclick caused the moustache to move");
+			newVersion.commit("Interaction model has been improved");
+			newVersion.merge(master, "Released version now integrates new features and content");
+			
+		</script>
 		<p>Finally, the development branch is no more used and can, therefore be deleted.</p>
 		<pre>git branch -d newVersion</pre>
 		<input class="ui button" value="Claim my badge" name="end" ng-click='award=true'>
