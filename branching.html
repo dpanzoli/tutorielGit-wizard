@@ -147,8 +147,12 @@ git commit -m "First release of Youstache!"</pre>
 	<div class="content">
 		<p>The app has been released days ago, and it's already a success. You decide to improve the application with more content.</p>
 		<p>In order to do so, you open a new branch for future development of the app.</p>
-		<pre>git branch newVersion</pre>
-		<pre>git checkout newVersion</pre>
+		<pre>git branch development</pre>
+		<p>There's no feedback from git when creating a new branch. However, you can check it was successfully created using the following command:</p>
+		<pre>git branch</pre>
+		<p>You should see that a new branch <i>development</i> was created, but the star indicates that you are still located on the <i>master</i> branch. Switching branch is achieved through the following command:</p>
+		<pre>git checkout development</pre>
+		<p>You are now working on <i>development</i> while <i>master</i> is safely stored.</p>
 		<p>In your java project, upload 4 new images in the image folder. Each image must be cropped to 450px wide and 600px high. If you are out of imagination, use the following pictures:
 		<a href="donaldtrump.jpg">donaldtrump.jpg&nbsp;<i class="far fa-file-image"></i></a>&nbsp;
 		<a href="grumpycat.jpg">grumpycat.jpg&nbsp;<i class="far fa-file-image"></i></a>&nbsp;
@@ -169,9 +173,9 @@ git commit -m "New content for next release"</pre>
 		<p>Users are starting to complain because the application is buggy.</p>
 		<img src="review.png" width="600px">
 		<p>Youstache has become so popular on the market that you feel rushed by the user community to fix this bug before the sales start to drop off.</p>
-		<p>Switch back to the master branch to retrieve the released version of the app. The master branch will be used to fix the bug.</p>
+		<p>Switch back to the <i>master</i> branch to retrieve the released version of the app. The <i>master</i> branch will be used to fix the bug.</p>
 		<pre>git checkout master</pre>
-		<p>Notice that the new images have disappeared, which tells the project in the workspace has been replaced by the older version (head of branch master).</p>
+		<p>Notice that the new images have disappeared, which tells the project in the workspace has been replaced by the older version (head of <i>master</i>branch).</p>
 		<p>Mend the Java code so that a click on the image is no more processed if the moustache has already been put. Changes should be made in the class <i>Model.java</i><p>
 		<p>Add and commit your changes</p>
 		<pre>git add -A
@@ -194,7 +198,7 @@ git commit -m "Fixed a bug where a misclick caused the moustache to move"</pre>
 	</div>
 	<div class="content">
 		<p>The urgent matter has been taken care of. It is now time to resume the development of the new release.</p>
-		<pre>git checkout newVersion</pre>
+		<pre>git checkout development</pre>
 		<p>The interaction model should be improved to allow users to move the moustache when they mean to. In the Java project, implement the following features:
 		<ul>
 			<li>When a moustache is pinned, a click within 20px of its center will allow to readjust it to the new coordinates. Beyond that pixel distance, there's no effect on the moustache.</li>
@@ -234,21 +238,24 @@ git commit -m "Interaction model has been improved"</pre>
 
 			var master = gitgraph.branch("master");		
 			master.commit("First release of Youstache!");
-			var newVersion = gitgraph.branch("newVersion")
-			newVersion.commit("New content for next release");
+			var development = gitgraph.branch("development")
+			development.commit("New content for next release");
 			master.commit("Fixed a bug where a misclick caused the moustache to move");
-			newVersion.commit("Interaction model has been improved");
+			development.commit("Interaction model has been improved");
 			
 		</script>
-		<p>The modifications of newVersion are ready to be merged into the released Youstache! application.</p>
+		<p>The modifications in the <i>development</i> branch are ready to be merged into the released Youstache! application.</p>
 		<pre>git checkout master
-git merge newVersion</pre>
-		<p>Unsurprinsingly, conflicts will appear and need to be solved for the merging to be completed. Git can tell you which files should be inspected.</p>
+git merge development</pre>
+		<div class="ui negative message">
+			Unsurprinsingly, conflicts are raised as some files have been modified on both branches in parallel. These conflicts need to be solved for the merging to be completed.
+		</div>
+		<p>Git can tell you which files should be inspected.</p>
 		<pre>git diff -names-only</pre>
 		<p>Go to the Eclipse editor and clean the code where needed. Look for those >>>>> markers <<<<<.</p>
 		<pre>git add -A
 git commit -m "Released version now integrates new features and content"</pre>
-		<p>Once the development branch has been merged, the head now points to the latest commit. The whole history of the commits can be read in the log.</p>
+		<p>Once the <i>development</i> branch has been merged, the head now points to the latest commit. The whole history of the commits can be read in the log.</p>
 		<pre>git log --oneline --decorate --graph</pre>
 		<ul>
 		<li><i>oneline</i> is for showing one line only of each commit</li>
@@ -269,15 +276,15 @@ git commit -m "Released version now integrates new features and content"</pre>
 
 			var master = gitGraphAfterMerge.branch("master");		
 			master.commit("First release of Youstache!");
-			var newVersion = gitGraphAfterMerge.branch("newVersion")
-			newVersion.commit("New content for next release");
+			var development = gitGraphAfterMerge.branch("development")
+			development.commit("New content for next release");
 			master.commit("Fixed a bug where a misclick caused the moustache to move");
-			newVersion.commit("Interaction model has been improved");
-			newVersion.merge(master, "Released version now integrates new features and content");
+			development.commit("Interaction model has been improved");
+			development.merge(master, "Released version now integrates new features and content");
 			
 		</script>
-		<p>Finally, the development branch is no more used and can, therefore be deleted.</p>
-		<pre>git branch -d newVersion</pre>
+		<p>Finally, the <i>development</i> branch is no more used and can, therefore be deleted.</p>
+		<pre>git branch -d development</pre>
 		<input class="ui button" value="Claim my badge" name="end" ng-click='award=true'>
 	</div>
 	
