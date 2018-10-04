@@ -26,6 +26,17 @@
 	background-repeat: no-repeat;
 	background-position: top 0px left 0px;
   }
+  
+  .java{
+	padding: 7px;
+	padding-left: 40px;
+	border: 1px solid #8BC9DD;
+	background-image: url('java.png');
+	background-repeat: no-repeat;
+	background-position: top 0px left 0px;
+	margin-bottom: 12px;
+  }
+  
 </style>
 <script>
 	$(document).ready(function() {
@@ -183,11 +194,15 @@ git commit -m "First release of Youstache!"</pre>
 		<p>You should see that a new branch <i>development</i> was created, but the star indicates that you are still located on the <i>master</i> branch. Switching branch is achieved through the following command:</p>
 		<pre>git checkout development</pre>
 		<p>You are now working on <i>development</i> while <i>master</i> is safely stored.</p>
-		<p>In your java project, upload 4 new images in the image folder. Each image must be cropped to 450px wide and 600px high. If you are out of imagination, use the following pictures:
-		<a href="donaldtrump.jpg">donaldtrump.jpg&nbsp;<i class="far fa-file-image"></i></a>&nbsp;
-		<a href="grumpycat.jpg">grumpycat.jpg&nbsp;<i class="far fa-file-image"></i></a>&nbsp;
-		<a href="elvispresley.jpg">elvispresley.jpg&nbsp;<i class="far fa-file-image"></i></a>&nbsp;
-		<a href="harrypotter.jpg">harrypotter.jpg&nbsp;<i class="far fa-file-image"></i></a>
+		<p>
+			<a class="ui teal label">
+			Feature #1
+			</a>
+			In your java project, upload 4 new images in the image folder. Each image must be cropped to 450px wide and 600px high. If you are out of imagination, use the following pictures:
+			<a href="donaldtrump.jpg">donaldtrump.jpg&nbsp;<i class="far fa-file-image"></i></a>&nbsp;
+			<a href="grumpycat.jpg">grumpycat.jpg&nbsp;<i class="far fa-file-image"></i></a>&nbsp;
+			<a href="elvispresley.jpg">elvispresley.jpg&nbsp;<i class="far fa-file-image"></i></a>&nbsp;
+			<a href="harrypotter.jpg">harrypotter.jpg&nbsp;<i class="far fa-file-image"></i></a>
 		</p>
 		<p>Commit those changes.</p>
 		<pre>git add -A
@@ -208,7 +223,16 @@ git commit -m "New content for next release"</pre>
 		<p>Switch back to the <i>master</i> branch to retrieve the released version of the app. The <i>master</i> branch will be used to fix the bug.</p>
 		<pre>git checkout master</pre>
 		<p>Notice that the new images have disappeared, which tells the project in the workspace has been replaced by the older version (head of <i>master</i>branch).</p>
-		<p>Mend the Java code so that a click on the image is no more processed if the moustache has already been put. Changes should be made in the class <i>Model.java</i><p>
+		<p>
+			<a class="ui red label">
+			Buf fix
+			</a>
+			Mend the Java code so that a click on the image is no more processed if the moustache has already been put.
+		</p>
+		<div class="java">
+			<p>Changes should be made in the class <i>Model.java</i><p>
+			<p><img src="capture_fix.png" width="650px"></p>
+		</div>
 		<p>Add and commit your changes</p>
 		<pre>git add -A
 git commit -m "Fixed a bug where a misclick caused the moustache to move"</pre>
@@ -234,11 +258,26 @@ git commit -m "Fixed a bug where a misclick caused the moustache to move"</pre>
 		<p>The urgent matter has been taken care of. It is now time to resume the development of the new release.</p>
 		<pre>git checkout development</pre>
 		<p>The interaction model should be improved to allow users to move the moustache when they mean to. In the Java project, implement the following features:
-		<ul>
-			<li>When a moustache is pinned, a click within 20px of its center will allow to readjust it to the new coordinates. Beyond that pixel distance, there's no effect on the moustache.</li>
-			<li>Pressing "Suppr" causes the moustache to be removed.</li>
-		</ul>
-		</p>
+		<p>
+			<a class="ui teal label">
+			Feature #2
+			</a>
+		When a moustache is pinned, a click within 20px of its center will allow to readjust it to the new coordinates. Beyond that pixel distance, there's no effect on the moustache.</p>
+		<div class="java">
+			<p>Carry the following changes in <i>Model.java</i></p>
+			<p><img src="capture_feat1.png" width="610px"></p>
+		</div>
+		<p>
+			<a class="ui teal label">
+				Feature #3
+			</a>
+			Pressing "Suppr" causes the moustache to be removed.</p>
+		<div class="java">
+			<p>Changes must be made in <i>ImageController.java</i>. <i class="fas fa-exclamation-circle"></i>&nbsp;Dont' forget to registrer the listener in the application!</p>
+			<p><img src="capture_feat2.png" width="306px"></p>
+			<p>And in <i>Model.java</i>:
+			<p><img src="capture_feat2b.png" width="547px"></p>
+		</div>
 		<p>Commit your changes.</p>
 		<pre>git add -A
 git commit -m "Interaction model has been improved"</pre>
@@ -246,7 +285,7 @@ git commit -m "Interaction model has been improved"</pre>
 		  <i class="fas fa-chess-knight fa-5x"></i>
 		  <div class="content">
 			<div class="header">
-			  new release ready!
+			  New release ready!
 			</div>
 			<p>The developments in this new branch are now complete. It is now time to merge the development branch with the master, and release the new version of Youstache!</p>
 		  </div>
